@@ -1,65 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <title>Loan Classification System</title>
+  <style>
+    body {
+      background-color: aliceblue;
+    }
+  </style>
 </head>
 
-<style>
-  body{
-    background-color: aliceblue;
-  }
-</style>
 <body>
-
 
   <div class="bg-dark">
     <nav class="navbar navbar-expand-md navbar-dark bg-dark container-fluid px-5">
       <a class="navbar-brand" href="/">Loan Classification System</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01" aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample01"
+        aria-controls="navbarsExample01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-    
+
       <div class="collapse navbar-collapse justify-content-end" id="navbarsExample01">
         <ul class="navbar-nav ml-auto">
-          <a class="nav-link" href="/predict">Classify</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/change_password">Change Password</a>
-        </li>
-        <li>
-          <a class="nav-link" href="/change_password">View loan status</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/logout">Logout</a>
-        </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/predict">Classify</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/change_password">Change Password</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/loan_status">View Loan Status</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
         </ul>
       </div>
     </nav>
   </div>
-  
 
-    <div class="container mt-5">
-        <h2 class="mb-4" style="font-size: 24px;">Your loan status</h2>
-       <table class="table table-striped">
+<div class="container mt-5">
+  <h2 class="mb-4" style="font-size: 24px;">Loan Status for All Users</h2>
+  <table class="table table-striped">
+    <tr>
+      <th>User ID</th>
+      <th>Account Number</th>
+      <th>Loan Amount</th>
+      <th>Loan Term Days</th>
+      <th>Prediction Result</th> <!-- Add this column for prediction result -->
+    </tr>
+    {% for item in data %}
+    <tr>
+      <td>{{ item[0] }}</td> {# Assuming user_id is at index 0 #}
+      <td>{{ item[1] }}</td> {# Assuming account_no is at index 1 #}
+      <td>{{ item[3] }}</td> {# Assuming loan_amount is at index 3 #}
+      <td>{{ item[4] }}</td> {# Assuming loan_term is at index 4 #}
+      <td>{% if item[2] == 1 %} Approved {% else %} Not Approved {% endif %}</td> {# Assuming amount_paid is at index 2
+      #}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
 
-       <tr>
-        <th>Account Number</th>
-        <th>Loan Amount</th>
-        <th>Loan Term Days</th>
-       </tr>
-            {% for item in data %}
-            <tr>
-                <td>{{ item[6] }}</td>
-                <td>{{ item[3] }}</td>
-                <td>{{ item[4] }}</td>
-              
-            </tr>
-            {% endfor %}
-    </table>
-    </div>
 </body>
+
 </html>
+

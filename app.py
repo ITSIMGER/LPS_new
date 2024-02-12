@@ -4,7 +4,7 @@ import re
 from dateutil import relativedelta
 from datetime import datetime
 import os
-
+from flask import request, redirect, url_for
 from flask import Flask, flash, redirect, request, render_template, session, url_for
 import pickle
 
@@ -153,7 +153,20 @@ def admin_dashboard():
     return render_template('admin_dashboard.html', users=users)
 
 
-# ...
+# /loan_status_admin
+@app.route("/loan_status_admin")
+@admin_login_required
+def loanStatusAdmin():
+    cursor.execute(
+        """SELECT user_id, account_no, amount_paid, loan_amount, loan_term FROM loan""")
+    data = cursor.fetchall()
+
+    print(f"DEBUG: data={data}")  # Debug print
+
+    return render_template("loan_status_admin.html", data=data)
+
+
+
 @app.route('/admin/modify_user/<int:user_id>', methods=['GET', 'POST'])
 def admin_modify_user(user_id):
     # Retrieve the user from the database or any other data source
@@ -275,18 +288,6 @@ def loanPage():
     data = cursor.fetchall()
 
     return render_template("./loan_page.html", data=data)
-
-
-@app.route("/loan_status")
-def loanStatusPage():
-    today = date.today()
-    user_id = session.get("user_id")
-
-    cursor.execute(
-        """SELECT * FROM loan where user_id={}""".format(user_id))
-    data = cursor.fetchall()
-
-    return render_template("./loan_status.html", data=data)
 
 
 # prediction
@@ -424,6 +425,34 @@ def predict():
         if 'user_id' in session:
             return render_template("prediction.html")
 
+        return redirect("/")
+
+# /loan_status
+
+
+# /loan_status
+@app.route("/loan_status")
+def loanStatusPage():
+    today = date.today()
+    user_id = session.get("user_id")
+
+    print(f"DEBUG: user_id={user_id}")  # Debug print
+
+    # Assuming you have a way to check if the user is an admin
+    is_admin = False  # Set this based on your actual admin check logic
+
+    if user_id is not None and is_admin:
+        # Fetch all users who have submitted data and their prediction results
+        cursor.execute(
+            """SELECT user_id, account_no, amount_paid, loan_amount, loan_term FROM loan""")
+        data = cursor.fetchall()
+
+        print(f"DEBUG: data={data}")  # Debug print
+
+        return render_template("loan_status.html", data=data)
+    else:
+        # Handle the case where the user is not an admin
+        flash("You do not have permission to view the loan status.", "error")
         return redirect("/")
 
 

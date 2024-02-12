@@ -90,9 +90,11 @@
           <li class="nav-item">
             <a class="nav-link" href="/change_password">Change Password</a>
           </li>
-          <li>
-            <a class="nav-link" href="/loan_status">View loan status</a>
+          {% if is_admin %}
+          <li class="nav-item">
+            <a class="nav-link" href="/loan_status">View Loan Status</a>
           </li>
+          {% endif %}
           <li class="nav-item">
             <a class="nav-link" href="/logout">Logout</a>
           </li>
